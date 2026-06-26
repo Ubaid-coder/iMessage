@@ -6,10 +6,12 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import job from './lib/cron.js'
-import clerkWebhook from './webhooks/clerk.webhook.js'
+import clerkWebhook from './webhooks/clerk.webhook.js';
+import authRoutes from './routes/auth.route.js';
 import { clerkMiddleware } from '@clerk/express';
 
+
+import job from './lib/cron.js'
 import User from './models/user.model.js';
 import { connectDB } from './lib/db.js';
 
