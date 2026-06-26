@@ -6,6 +6,8 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import job from './lib/cron.js'
+
 import { clerkMiddleware } from '@clerk/express';
 
 import User from './models/user.model.js';
@@ -30,10 +32,10 @@ app.get("/health", (req, res) => {
 })
 
 // if the public directory exists, serve the static file
-if(fs.existsSync(publicDir)){
+if (fs.existsSync(publicDir)) {
     app.use(express.static(publicDir));
 
-    app.get("/{*any}",(req,res,next) => {
+    app.get("/{*any}", (req, res, next) => {
         res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
     });
 }
@@ -41,4 +43,6 @@ if(fs.existsSync(publicDir)){
 app.listen(port, () => {
     connectDB();
     console.log(`Server is up and running on port 3000`);
+
+    if (process.env.NODE_ENV == "production") job.start();
 })
