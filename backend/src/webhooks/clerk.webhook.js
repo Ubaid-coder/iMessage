@@ -18,8 +18,9 @@ router.post("/", async (req, res) => {
             headers: new Headers(req.headers),
             body: payload
         })
-
         const evt = await verifyWebhook(request, { signingSecret });
+
+        
         if (evt.type == 'user.created' || evt.type == 'user.updated') {
             const u = evt.data;
             const email = u.email_addresses?.find((e) => e.id === u.primary_email_address_id)?.email_address ??
@@ -41,7 +42,8 @@ router.post("/", async (req, res) => {
         } 
         
         if (evt.type == 'user.deleted') {
-            if (evt.data.id) await User.findByIdAndDelete({ clerkId: evt.data.id });
+            console.log('delete request')
+            if (evt.data.id) await User.findOneAndDelete({ clerkId: evt.data.id });
         }
 
         res.status(200).json({ received: true });
