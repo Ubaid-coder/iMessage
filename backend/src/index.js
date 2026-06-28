@@ -15,9 +15,10 @@ import { clerkMiddleware } from '@clerk/express';
 import job from './lib/cron.js'
 import User from './models/user.model.js';
 import { connectDB } from './lib/db.js';
+import { app, server } from './lib/socket.js';
 
 
-const app = express();
+
 
 const port = process.env.PORT;
 const FRONTEND_URL = process.env.FRONTEND_URL;
@@ -48,7 +49,7 @@ if (fs.existsSync(publicDir)) {
     });
 }
 
-app.listen(port, () => {
+server.listen(port, () => {
     connectDB();
     console.log(`Server is up and running on port 3000`);
 
